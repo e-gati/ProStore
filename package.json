@@ -1,6 +1,6 @@
 {
   "name": "prostore",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ProStore — Складова система",
   "main": "main.js",
   "scripts": {
@@ -14,8 +14,10 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "electron-updater": "^6.8.3",
+    "node-forge": "^1.4.0",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "selfsigned": "^5.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.0",
@@ -33,6 +35,11 @@
     "asarUnpack": [
       "**/*.node"
     ],
+    "publish": {
+      "provider": "github",
+      "owner": "e-gati",
+      "repo": "ProStore"
+    },
     "files": [
       "dist/**/*",
       "main.js",

@@ -1,9 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 // ── Сигурен мост между Main и React ──────────────────────────────────────────
-// Само изрично дефинираните функции са достъпни в renderer-а.
-// contextIsolation: true гарантира, че renderer няма достъп до Node.js директно.
-
 contextBridge.exposeInMainWorld("electron", {
 
   // Информация за локалния HTTP сървър (IP, port, URL за QR кода)
@@ -13,7 +10,6 @@ contextBridge.exposeInMainWorld("electron", {
   onBarcode: (callback) => {
     const handler = (_event, code) => callback(code);
     ipcRenderer.on("barcode-scanned", handler);
-    // Връща cleanup функция
     return () => ipcRenderer.removeListener("barcode-scanned", handler);
   },
 
@@ -22,7 +18,32 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.removeAllListeners("barcode-scanned");
   },
 
-  // Диалог за отваряне на файл (ако е нужен в бъдеще)
+  // Телефонът се свърза успешно (камерата тръгна) → затвори QR модала
+  onPhoneConnected: (callback) => {
+    ipcRenderer.on("phone-connected", callback);
+  },
+  offPhoneConnected: () => {
+    ipcRenderer.removeAllListeners("phone-connected");
+  },
+
+  // Диалог за отваряне на файл
   showOpenDialog: (opts) => ipcRenderer.invoke("show-open-dialog", opts),
+
+  // ── Автоматичен ъпдейт ────────────────────────────────────────────────────
+
+  // Извикай се когато има нова версия (започва изтегляне)
+  onUpdateAvailable: (callback) => {
+    ipcRenderer.on("update-available", callback);
+  },
+
+  // Извикай се когато ъпдейтът е изтеглен и готов за инсталация
+  onUpdateDownloaded: (callback) => {
+    ipcRenderer.on("update-downloaded", callback);
+  },
+
+  // Инсталирай ъпдейта и рестартирай приложението
+  installUpdate: () => {
+    ipcRenderer.send("install-update");
+  },
 
 });
