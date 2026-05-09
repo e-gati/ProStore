@@ -1,6 +1,6 @@
 {
   "name": "prostore",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ProStore — Складова система",
   "main": "main.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "dist:all": "npm run build && electron-builder --win --mac"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0",
+    "@supabase/supabase-js": "^2.105.4",
     "electron-updater": "^6.8.3",
     "node-forge": "^1.4.0",
     "react": "^19.2.5",
