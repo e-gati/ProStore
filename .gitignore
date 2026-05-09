@@ -27,4 +27,4 @@ dist-ssr
 *.crt
 node_modules/
 release/
-dist/
+dist/.claude/ 
