@@ -213,15 +213,19 @@ function createMainWindow() {
 }
 
 // ── Автоматичен ъпдейт ────────────────────────────────────────────────────────
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
+
 autoUpdater.on("update-available", () => {
   if (mainWin) mainWin.webContents.send("update-available");
 });
 
 autoUpdater.on("update-downloaded", () => {
-  // Изчакай 5 секунди за да е сигурно че React е зареден и listener-ът е регистриран
-  setTimeout(() => {
-    if (mainWin) mainWin.webContents.send("update-downloaded");
-  }, 5000);
+  if (mainWin) mainWin.webContents.send("update-downloaded");
+});
+
+autoUpdater.on("error", (err) => {
+  console.error("AutoUpdater error:", err);
 });
 
 ipcMain.on("install-update", () => {

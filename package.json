@@ -1,6 +1,6 @@
 {
   "name": "prostore",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "ProStore — Складова система",
   "main": "main.js",
   "scripts": {
@@ -50,12 +50,11 @@
       "output": "release"
     },
     "win": {
+      "artifactName": "ProStore-Setup-${version}.exe",
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ],
       "icon": "assets/icon.ico",
@@ -75,10 +74,7 @@
       "target": [
         {
           "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
+          "arch": ["x64", "arm64"]
         }
       ],
       "icon": "assets/icon.icns",
@@ -89,9 +85,7 @@
       "icon": "assets/icon.icns"
     },
     "linux": {
-      "target": [
-        "AppImage"
-      ],
+      "target": ["AppImage"],
       "icon": "assets/icon.png",
       "category": "Office"
     }
