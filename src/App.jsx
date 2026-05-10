@@ -595,6 +595,7 @@ export default function App(){
   const [хДата,  setХД]   = useState("all");
   const [хКат,   setХК]   = useState("Всички");
 
+  const [ъпдейтМод, setУМ] = useState(false);  // модал за auto-updater
   const [отчМ,   setОМ]   = useState(()=>{
     const d=new Date(getNow().getFullYear(),getNow().getMonth(),1);
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
@@ -701,11 +702,7 @@ export default function App(){
   useEffect(()=>{
     if(!window.electron) return;
     window.electron.onUpdateAvailable(()=>{ setFl("🔄 Нова версия се изтегля..."); });
-    window.electron.onUpdateDownloaded(()=>{
-      if(confirm("✅ Новата версия е готова!\n\nИнсталирай сега и рестартирай?")){
-        window.electron.installUpdate();
-      }
-    });
+    window.electron.onUpdateDownloaded(()=>{ setУМ(true); });
   },[]);
 
   // ── Sync refs ─────────────────────────────────────────────────────────────
@@ -2672,6 +2669,38 @@ export default function App(){
           </div>
         );
       })()}
+
+      {/* ── МОДАЛ АВТОМАТИЧЕН ЪПДЕЙТ ── */}
+      {ъпдейтМод&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",backdropFilter:"blur(4px)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+          <div style={{background:"#fff",borderRadius:16,padding:0,width:380,boxShadow:"0 24px 60px rgba(0,0,0,.25)",overflow:"hidden"}}>
+            <div style={{background:"linear-gradient(135deg,#1e3a8a,#1d4ed8)",padding:"28px 28px 24px",textAlign:"center"}}>
+              <div style={{fontSize:44,marginBottom:8}}>🚀</div>
+              <div style={{fontSize:18,fontWeight:800,color:"#fff",letterSpacing:"-.02em"}}>Нова версия е готова!</div>
+              <div style={{fontSize:13,color:"rgba(255,255,255,.7)",marginTop:6}}>ПроСтор е обновен и готов за инсталация</div>
+            </div>
+            <div style={{padding:"24px 28px 28px"}}>
+              <div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:10,padding:"12px 16px",marginBottom:20,display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:20}}>✅</span>
+                <div>
+                  <div style={{fontSize:13,fontWeight:600,color:"#15803d"}}>Изтеглянето е завършено</div>
+                  <div style={{fontSize:12,color:"#9ca3af",marginTop:2}}>Приложението ще се рестартира автоматично</div>
+                </div>
+              </div>
+              <div style={{display:"flex",gap:10}}>
+                <button onClick={()=>setУМ(false)}
+                  style={{flex:1,padding:"11px",background:"#f3f4f6",color:"#374151",border:"none",borderRadius:9,fontFamily:"inherit",fontWeight:600,fontSize:14,cursor:"pointer"}}>
+                  По-късно
+                </button>
+                <button onClick={()=>window.electron.installUpdate()}
+                  style={{flex:2,padding:"11px",background:"#1d4ed8",color:"#fff",border:"none",borderRadius:9,fontFamily:"inherit",fontWeight:700,fontSize:14,cursor:"pointer",boxShadow:"0 2px 8px rgba(29,78,216,.35)"}}>
+                  ✓ Инсталирай сега
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
