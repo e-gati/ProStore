@@ -1,6 +1,6 @@
 {
   "name": "prostore",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ProStore — Складова система",
   "main": "main.js",
   "scripts": {

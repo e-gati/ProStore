@@ -218,7 +218,10 @@ autoUpdater.on("update-available", () => {
 });
 
 autoUpdater.on("update-downloaded", () => {
-  if (mainWin) mainWin.webContents.send("update-downloaded");
+  // Изчакай 5 секунди за да е сигурно че React е зареден и listener-ът е регистриран
+  setTimeout(() => {
+    if (mainWin) mainWin.webContents.send("update-downloaded");
+  }, 5000);
 });
 
 ipcMain.on("install-update", () => {
